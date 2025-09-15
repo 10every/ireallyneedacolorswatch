@@ -67,19 +67,22 @@ export default function App() {
           <motion.img 
             src={generatedColor ? logoWhite : logoColored} 
             alt="i really need a color swatch"
-            className="w-auto max-w-full h-auto transition-all duration-700"
+            className="w-auto max-w-full h-auto transition-all duration-700 sm:max-w-md"
+            style={{
+              maxHeight: generatedColor ? "120px" : "240px",
+              width: "auto",
+              height: "auto"
+            }}
             initial={{ opacity: 0, scale: 0.8, y: -30 }}
             animate={{ 
               opacity: hasLoaded ? 1 : 0,
               scale: hasLoaded ? 1 : 0.8,
-              y: hasLoaded ? 0 : -30,
-              height: generatedColor ? "160px" : "320px" 
+              y: hasLoaded ? 0 : -30
             }}
             transition={{ 
               opacity: { duration: 0.8, delay: 0.4 },
               scale: { duration: 0.8, delay: 0.4, ease: "easeOut" },
-              y: { duration: 0.8, delay: 0.4, ease: "easeOut" },
-              height: { duration: 0.7 }
+              y: { duration: 0.8, delay: 0.4, ease: "easeOut" }
             }}
           />
         </div>
