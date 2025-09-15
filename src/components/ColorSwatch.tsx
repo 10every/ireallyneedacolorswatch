@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Share2 } from 'lucide-react';
+import { Share2, Download } from 'lucide-react';
 
 interface ColorSwatchProps {
   color: string;
@@ -113,6 +113,22 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
       }
     }
   };
+
+  const handleDownload = async () => {
+    try {
+      const pngBlob = await generateColorPNG();
+      const url = URL.createObjectURL(pngBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.log('Error downloading:', err);
+    }
+  };
   return (
     <motion.div 
       initial={{ opacity: 0, y: 30 }}
@@ -177,9 +193,9 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
         </div>
       </motion.div>
       
-      {/* Share Button */}
+      {/* Share and Download Buttons */}
       <motion.div 
-        className="mt-2"
+        className="flex items-center gap-2 mt-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.8 }}
@@ -190,6 +206,13 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
         >
           <Share2 className="w-4 h-4" />
           <span className="text-sm font-medium">Share</span>
+        </button>
+        <button
+          onClick={handleDownload}
+          className="flex items-center gap-2 px-4 py-2 bg-white text-black border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+        >
+          <Download className="w-4 h-4" />
+          <span className="text-sm font-medium">Download</span>
         </button>
       </motion.div>
 
