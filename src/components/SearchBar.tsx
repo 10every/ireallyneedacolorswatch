@@ -20,7 +20,7 @@ export default function SearchBar({ onSubmit, isLoading = false }: { onSubmit: (
           value={val}
           onChange={(e) => setVal(e.target.value)}
           placeholder="just tell me what you're thinking about and I'll give you the perfect color"
-          className="flex-1 h-12 px-2 sm:px-3 outline-none bg-white text-sm border-0 min-w-0 placeholder:text-xs sm:placeholder:text-sm"
+          className="flex-1 h-12 px-2 sm:px-3 outline-none bg-white text-base border-0 min-w-0 placeholder:text-xs sm:placeholder:text-sm"
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
               onSubmit(val);
