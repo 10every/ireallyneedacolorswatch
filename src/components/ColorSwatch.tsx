@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Share2, Twitter, Instagram } from 'lucide-react';
+import { Share2, Instagram } from 'lucide-react';
 
 interface ColorSwatchProps {
   color: string;
@@ -239,7 +239,7 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
           onClick={handleXShare}
           className="flex items-center gap-2 px-3 py-2 bg-white text-black text-xs font-medium border-2 border-black hover:bg-gray-100 transition-colors duration-200"
         >
-          <Twitter className="w-3 h-3" />
+          <span className="w-3 h-3 text-xs font-bold">X</span>
           X
         </button>
         <button
