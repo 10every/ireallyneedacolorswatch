@@ -13,14 +13,19 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
   const shareText = `Check out this perfect color: ${pantoneName} (${color}) - from ireallyneedacolorswatch.com\n\n${shareUrl}`;
 
   // Generate PNG of the color swatch
-  const generateColorPNG = async (): Promise<Blob> => {
+  const generateColorPNG = async (isMobile = false): Promise<Blob> => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Could not get canvas context');
 
-    // Set canvas size for social media (1080x1080 for Instagram)
-    canvas.width = 1080;
-    canvas.height = 1080;
+    // Set canvas size - 9:16 for mobile, square for desktop
+    if (isMobile) {
+      canvas.width = 1080;
+      canvas.height = 1920; // 9:16 aspect ratio
+    } else {
+      canvas.width = 1080;
+      canvas.height = 1080; // Square for Instagram
+    }
 
     // Fill background with the color
     ctx.fillStyle = color;
@@ -55,17 +60,18 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     // Add color name with wrapping
     ctx.font = 'bold 48px Arial';
     const nameLines = wrapText(pantoneName, canvas.width - 100, 48);
+    const centerY = isMobile ? canvas.height / 2 : canvas.height / 2;
     nameLines.forEach((line, index) => {
-      ctx.fillText(line, canvas.width / 2, canvas.height / 2 - 60 + (index * 60));
+      ctx.fillText(line, canvas.width / 2, centerY - 60 + (index * 60));
     });
     
     // Add hex code
     ctx.font = '36px Arial';
-    ctx.fillText(color.toUpperCase(), canvas.width / 2, canvas.height / 2 + 40);
+    ctx.fillText(color.toUpperCase(), canvas.width / 2, centerY + 40);
     
     // Add color code (without Pantone branding)
     ctx.font = '24px Arial';
-    ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, canvas.height / 2 + 100);
+    ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, centerY + 100);
     
     // Add website attribution
     ctx.font = '20px Arial';
@@ -78,9 +84,12 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     });
   };
 
+  // Detect if user is on mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
   const handleShare = async () => {
     try {
-      const pngBlob = await generateColorPNG();
+      const pngBlob = await generateColorPNG(isMobile);
       const file = new File([pngBlob], `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`, { type: 'image/png' });
       
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -116,11 +125,11 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
 
   const handleDownload = async () => {
     try {
-      const pngBlob = await generateColorPNG();
+      const pngBlob = await generateColorPNG(isMobile);
       const url = URL.createObjectURL(pngBlob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`;
+      a.download = `${pantoneName.replace(/\s+/g, '_')}_color_swatch_${isMobile ? 'mobile' : 'desktop'}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
