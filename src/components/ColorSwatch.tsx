@@ -60,7 +60,7 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     // Add color name with wrapping
     ctx.font = 'bold 48px Arial';
     const nameLines = wrapText(pantoneName, canvas.width - 100, 48);
-    const centerY = isMobile ? canvas.height / 2 : canvas.height / 2;
+    const centerY = canvas.height / 2;
     nameLines.forEach((line, index) => {
       ctx.fillText(line, canvas.width / 2, centerY - 60 + (index * 60));
     });
@@ -73,7 +73,7 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     ctx.font = '24px Arial';
     ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, centerY + 100);
     
-    // Add website attribution
+    // Add website attribution at the bottom
     ctx.font = '20px Arial';
     ctx.fillText('i really need a color swatch', canvas.width / 2, canvas.height - 100);
 
