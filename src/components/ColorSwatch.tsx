@@ -10,7 +10,7 @@ interface ColorSwatchProps {
 
 export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSwatchProps) {
   const shareUrl = `${window.location.origin}?color=${encodeURIComponent(color)}&name=${encodeURIComponent(pantoneName)}&code=${encodeURIComponent(pantoneCode)}&prompt=${encodeURIComponent(prompt)}`;
-  const shareText = `Check out this perfect color: ${pantoneName} (${color}) - from ireallyneedacolorswatch.com ${shareUrl}`;
+  const shareText = `Check out this perfect color: ${pantoneName} (${color}) - from ireallyneedacolorswatch.com\n\n${shareUrl}`;
 
   // Generate PNG of the color swatch
   const generateColorPNG = async (): Promise<Blob> => {
