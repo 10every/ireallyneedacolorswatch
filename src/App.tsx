@@ -87,7 +87,7 @@ export default function App() {
             <motion.img 
               src={generatedColor ? logoWhite : logoColored} 
               alt="i really need a color swatch"
-              className="w-auto max-w-full h-auto transition-all duration-700 sm:max-w-md"
+              className={`w-auto max-w-full h-auto transition-all duration-700 sm:max-w-md ${generatedColor ? 'cursor-pointer hover:opacity-80' : ''}`}
               style={{
                 maxHeight: generatedColor ? "120px" : "240px",
                 width: "auto",
@@ -104,6 +104,10 @@ export default function App() {
                 scale: { duration: 0.8, delay: 0.4, ease: "easeOut" },
                 y: { duration: 0.8, delay: 0.4, ease: "easeOut" }
               }}
+              onClick={generatedColor ? () => {
+                setGeneratedColor(null);
+                setPrompt('');
+              } : undefined}
             />
           </div>
         </motion.div>
