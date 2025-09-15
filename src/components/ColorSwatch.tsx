@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
-import { Share2, Instagram, Copy, ChevronDown } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { Share2 } from 'lucide-react';
 
 interface ColorSwatchProps {
   color: string;
@@ -10,24 +9,8 @@ interface ColorSwatchProps {
 }
 
 export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSwatchProps) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const shareUrl = `${window.location.origin}?color=${encodeURIComponent(color)}&name=${encodeURIComponent(pantoneName)}&code=${encodeURIComponent(pantoneCode)}&prompt=${encodeURIComponent(prompt)}`;
   const shareText = `Check out this perfect color: ${pantoneName} (${color}) - from ireallyneedacolorswatch.com ${shareUrl}`;
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   // Generate PNG of the color swatch
   const generateColorPNG = async (): Promise<Blob> => {
@@ -101,110 +84,33 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
       const file = new File([pngBlob], `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`, { type: 'image/png' });
       
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        // Native share with image
         await navigator.share({
           title: `${pantoneName} - Perfect Color`,
           text: shareText,
-          url: shareUrl,
           files: [file]
+        });
+      } else if (navigator.share) {
+        // Native share without image (fallback)
+        await navigator.share({
+          title: `${pantoneName} - Perfect Color`,
+          text: shareText,
+          url: shareUrl
         });
       } else {
         // Fallback: copy link to clipboard
-        navigator.clipboard.writeText(shareUrl);
+        await navigator.clipboard.writeText(shareUrl);
         alert('Shareable link copied to clipboard!');
       }
     } catch (err) {
       console.log('Error sharing:', err);
       // Fallback: copy link
-      navigator.clipboard.writeText(shareUrl);
-      alert('Shareable link copied to clipboard!');
-    }
-  };
-
-  const handleXShare = async () => {
-    try {
-      const pngBlob = await generateColorPNG();
-      const file = new File([pngBlob], `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`, { type: 'image/png' });
-      
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: `${pantoneName} - Perfect Color`,
-          text: shareText,
-          files: [file]
-        });
-      } else {
-        // Fallback: open Twitter with text
-        const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-        window.open(xUrl, '_blank');
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        alert('Shareable link copied to clipboard!');
+      } catch (clipboardErr) {
+        console.log('Clipboard not available:', clipboardErr);
       }
-    } catch (err) {
-      // Fallback: open Twitter
-      const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-      window.open(xUrl, '_blank');
-    }
-  };
-
-  const handleInstagramShare = async () => {
-    try {
-      const pngBlob = await generateColorPNG();
-      const file = new File([pngBlob], `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`, { type: 'image/png' });
-      
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: `${pantoneName} - Perfect Color`,
-          text: shareText,
-          files: [file]
-        });
-      } else {
-        // Fallback: download the image
-        const url = URL.createObjectURL(pngBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        alert('Color swatch image downloaded! You can now share it on Instagram.');
-      }
-    } catch (err) {
-      console.log('Error sharing to Instagram:', err);
-    }
-  };
-
-  const handleTikTokShare = async () => {
-    try {
-      const pngBlob = await generateColorPNG();
-      const file = new File([pngBlob], `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`, { type: 'image/png' });
-      
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: `${pantoneName} - Perfect Color`,
-          text: shareText,
-          files: [file]
-        });
-      } else {
-        // Fallback: download the image
-        const url = URL.createObjectURL(pngBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${pantoneName.replace(/\s+/g, '_')}_color_swatch.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        alert('Color swatch image downloaded! You can now share it on TikTok.');
-      }
-    } catch (err) {
-      console.log('Error sharing to TikTok:', err);
-    }
-  };
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      alert('Link copied to clipboard!');
-    } catch (err) {
-      console.log('Error copying link:', err);
     }
   };
   return (
@@ -271,73 +177,20 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
         </div>
       </motion.div>
       
-      {/* Share Button with Dropdown */}
+      {/* Share Button */}
       <motion.div 
-        ref={dropdownRef}
-        className="relative mt-2"
+        className="mt-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.8 }}
       >
         <button
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          onClick={handleShare}
           className="flex items-center gap-2 px-4 py-2 bg-white text-black border-2 border-black hover:bg-gray-100 transition-colors duration-200"
         >
           <Share2 className="w-4 h-4" />
           <span className="text-sm font-medium">Share</span>
-          <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
         </button>
-        
-        {/* Dropdown Menu */}
-        {isDropdownOpen && (
-          <motion.div 
-            className="absolute top-full left-0 mt-1 bg-white border-2 border-black shadow-lg z-10"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <button
-              onClick={() => {
-                handleXShare();
-                setIsDropdownOpen(false);
-              }}
-              className="flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200"
-            >
-              <span className="w-4 h-4 text-sm font-bold">X</span>
-              <span className="text-sm">Share on X</span>
-            </button>
-            <button
-              onClick={() => {
-                handleInstagramShare();
-                setIsDropdownOpen(false);
-              }}
-              className="flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200 border-t border-gray-200"
-            >
-              <Instagram className="w-4 h-4" />
-              <span className="text-sm">Share on Instagram</span>
-            </button>
-            <button
-              onClick={() => {
-                handleTikTokShare();
-                setIsDropdownOpen(false);
-              }}
-              className="flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200 border-t border-gray-200"
-            >
-              <span className="w-4 h-4 text-sm font-bold">T</span>
-              <span className="text-sm">Share on TikTok</span>
-            </button>
-            <button
-              onClick={() => {
-                handleCopyLink();
-                setIsDropdownOpen(false);
-              }}
-              className="flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200 border-t border-gray-200"
-            >
-              <Copy className="w-4 h-4" />
-              <span className="text-sm">Copy Link</span>
-            </button>
-          </motion.div>
-        )}
       </motion.div>
 
       {/* Inspiration Credit */}
