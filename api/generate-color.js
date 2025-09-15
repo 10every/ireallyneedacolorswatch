@@ -10,6 +10,42 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Prompt is required' });
     }
 
+    // Check if prompt contains "dord" - return special pastel colors
+    if (prompt.toLowerCase().includes('dord')) {
+      const pastelColors = [
+        '#FFB6C1', // Light Pink
+        '#FFC0CB', // Pink
+        '#FFCCCB', // Light Pink
+        '#F0E68C', // Khaki
+        '#98FB98', // Pale Green
+        '#AFEEEE', // Pale Turquoise
+        '#E0FFFF', // Light Cyan
+        '#F5DEB3', // Wheat
+        '#DDA0DD', // Plum
+        '#B0E0E6', // Powder Blue
+        '#F0F8FF', // Alice Blue
+        '#F5F5DC', // Beige
+        '#FFEFD5', // Papaya Whip
+        '#FFF8DC', // Cornsilk
+        '#E6E6FA', // Lavender
+        '#FDF5E6', // Old Lace
+        '#FFE4E1', // Misty Rose
+        '#F0FFF0', // Honeydew
+        '#FFF0F5', // Lavender Blush
+        '#F5FFFA'  // Mint Cream
+      ];
+      
+      const randomPastel = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+      const pantoneCode = `PANTONE ${Math.floor(Math.random() * 9000) + 1000} TPX`;
+      const colorName = prompt.charAt(0).toUpperCase() + prompt.slice(1);
+
+      return res.status(200).json({
+        hex: randomPastel,
+        name: colorName,
+        code: pantoneCode,
+      });
+    }
+
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: 'OpenAI API key not configured' });
