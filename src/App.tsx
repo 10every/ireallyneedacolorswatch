@@ -20,6 +20,23 @@ export default function App() {
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
+    // Check for URL parameters to pre-load a color
+    const urlParams = new URLSearchParams(window.location.search);
+    const colorParam = urlParams.get('color');
+    const nameParam = urlParams.get('name');
+    const codeParam = urlParams.get('code');
+    const promptParam = urlParams.get('prompt');
+
+    if (colorParam && nameParam && codeParam && promptParam) {
+      // Pre-load the shared color
+      setGeneratedColor({
+        color: colorParam,
+        pantoneCode: codeParam,
+        pantoneName: nameParam,
+        prompt: promptParam,
+      });
+    }
+
     // Trigger the welcome animation sequence
     const timer = setTimeout(() => {
       setHasLoaded(true);
