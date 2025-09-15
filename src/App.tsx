@@ -74,15 +74,15 @@ export default function App() {
       }}
     >
       {/* Centered Content Container */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full -mt-4 sm:mt-0">
+        <div className="flex-1 flex flex-col items-center justify-center w-full -mt-6 sm:mt-0">
         {/* Header */}
         <motion.div 
-          className="text-center mb-8"
+          className="text-center mb-6 sm:mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: hasLoaded ? 1 : 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="flex items-center justify-center" style={{ marginLeft: '10px' }}>
+          <div className="flex items-center justify-center mb-4 sm:mb-8" style={{ marginLeft: '10px' }}>
             <motion.img 
               src={generatedColor ? logoWhite : logoColored} 
               alt="i really need a color swatch"
@@ -109,7 +109,7 @@ export default function App() {
 
         {/* Search Interface */}
         <motion.div 
-          className="w-full"
+          className="w-full mb-1 sm:mb-2"
           initial={{ opacity: 0, y: 30 }}
           animate={{ 
             opacity: hasLoaded ? 1 : 0, 
