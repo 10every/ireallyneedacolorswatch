@@ -39,9 +39,9 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     ctx.font = '36px Arial';
     ctx.fillText(color.toUpperCase(), canvas.width / 2, canvas.height / 2 + 20);
     
-    // Add Pantone code
+    // Add color code (without Pantone branding)
     ctx.font = '24px Arial';
-    ctx.fillText(pantoneCode, canvas.width / 2, canvas.height / 2 + 80);
+    ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, canvas.height / 2 + 80);
     
     // Add website attribution
     ctx.font = '20px Arial';

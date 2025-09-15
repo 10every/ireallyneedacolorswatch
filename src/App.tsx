@@ -68,55 +68,58 @@ export default function App() {
 
   return (
     <div 
-      className="h-screen flex flex-col items-center justify-center px-6 py-8 transition-colors duration-1000 overflow-hidden"
+      className="h-screen flex flex-col items-center px-6 py-8 transition-colors duration-1000 overflow-hidden"
       style={{ 
         backgroundColor: generatedColor ? generatedColor.color : 'var(--background)' 
       }}
     >
-      {/* Header */}
-      <motion.div 
-        className="text-center mb-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: hasLoaded ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <div className="flex items-center justify-center mb-8" style={{ marginLeft: '10px' }}>
-          <motion.img 
-            src={generatedColor ? logoWhite : logoColored} 
-            alt="i really need a color swatch"
-            className="w-auto max-w-full h-auto transition-all duration-700 sm:max-w-md"
-            style={{
-              maxHeight: generatedColor ? "120px" : "240px",
-              width: "auto",
-              height: "auto"
-            }}
-            initial={{ opacity: 0, scale: 0.8, y: -30 }}
-            animate={{ 
-              opacity: hasLoaded ? 1 : 0,
-              scale: hasLoaded ? 1 : 0.8,
-              y: hasLoaded ? 0 : -30
-            }}
-            transition={{ 
-              opacity: { duration: 0.8, delay: 0.4 },
-              scale: { duration: 0.8, delay: 0.4, ease: "easeOut" },
-              y: { duration: 0.8, delay: 0.4, ease: "easeOut" }
-            }}
-          />
-        </div>
-      </motion.div>
+      {/* Centered Content Container */}
+      <div className="flex-1 flex flex-col items-center justify-center w-full">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: hasLoaded ? 1 : 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="flex items-center justify-center" style={{ marginLeft: '10px' }}>
+            <motion.img 
+              src={generatedColor ? logoWhite : logoColored} 
+              alt="i really need a color swatch"
+              className="w-auto max-w-full h-auto transition-all duration-700 sm:max-w-md"
+              style={{
+                maxHeight: generatedColor ? "120px" : "240px",
+                width: "auto",
+                height: "auto"
+              }}
+              initial={{ opacity: 0, scale: 0.8, y: -30 }}
+              animate={{ 
+                opacity: hasLoaded ? 1 : 0,
+                scale: hasLoaded ? 1 : 0.8,
+                y: hasLoaded ? 0 : -30
+              }}
+              transition={{ 
+                opacity: { duration: 0.8, delay: 0.4 },
+                scale: { duration: 0.8, delay: 0.4, ease: "easeOut" },
+                y: { duration: 0.8, delay: 0.4, ease: "easeOut" }
+              }}
+            />
+          </div>
+        </motion.div>
 
-      {/* Search Interface */}
-      <motion.div 
-        className="w-full mb-2"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ 
-          opacity: hasLoaded ? 1 : 0, 
-          y: hasLoaded ? 0 : 30 
-        }}
-        transition={{ duration: 0.7, delay: 1.2, ease: "easeOut" }}
-      >
-        <SearchBar onSubmit={handleGenerate} isLoading={isGenerating} />
-      </motion.div>
+        {/* Search Interface */}
+        <motion.div 
+          className="w-full"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ 
+            opacity: hasLoaded ? 1 : 0, 
+            y: hasLoaded ? 0 : 30 
+          }}
+          transition={{ duration: 0.7, delay: 1.2, ease: "easeOut" }}
+        >
+          <SearchBar onSubmit={handleGenerate} isLoading={isGenerating} />
+        </motion.div>
+      </div>
 
       {/* Loading State */}
       {isGenerating && (
