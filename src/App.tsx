@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 import { ColorSwatch } from './components/ColorSwatch';
 import SearchBar from './components/SearchBar';
 import { generatePantoneColorWithAI } from './utils/pantoneAI';
@@ -208,6 +209,7 @@ export default function App() {
           </a>
         </motion.footer>
       )}
+      <Analytics />
     </div>
   );
 }
