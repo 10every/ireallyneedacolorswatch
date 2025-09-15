@@ -26,22 +26,46 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Add text overlay
+    // Add text overlay with proper wrapping
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 48px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
-    // Add color name
-    ctx.fillText(pantoneName, canvas.width / 2, canvas.height / 2 - 60);
+    // Helper function to wrap text
+    const wrapText = (text: string, maxWidth: number, fontSize: number) => {
+      ctx.font = `${fontSize}px Arial`;
+      const words = text.split(' ');
+      const lines = [];
+      let currentLine = words[0];
+
+      for (let i = 1; i < words.length; i++) {
+        const word = words[i];
+        const width = ctx.measureText(currentLine + ' ' + word).width;
+        if (width < maxWidth) {
+          currentLine += ' ' + word;
+        } else {
+          lines.push(currentLine);
+          currentLine = word;
+        }
+      }
+      lines.push(currentLine);
+      return lines;
+    };
+
+    // Add color name with wrapping
+    ctx.font = 'bold 48px Arial';
+    const nameLines = wrapText(pantoneName, canvas.width - 100, 48);
+    nameLines.forEach((line, index) => {
+      ctx.fillText(line, canvas.width / 2, canvas.height / 2 - 60 + (index * 60));
+    });
     
     // Add hex code
     ctx.font = '36px Arial';
-    ctx.fillText(color.toUpperCase(), canvas.width / 2, canvas.height / 2 + 20);
+    ctx.fillText(color.toUpperCase(), canvas.width / 2, canvas.height / 2 + 40);
     
     // Add color code (without Pantone branding)
     ctx.font = '24px Arial';
-    ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, canvas.height / 2 + 80);
+    ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, canvas.height / 2 + 100);
     
     // Add website attribution
     ctx.font = '20px Arial';
@@ -223,38 +247,38 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
       
       {/* Sharing Buttons */}
       <motion.div 
-        className="flex items-center gap-3 mt-2"
+        className="flex items-center gap-2 mt-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.8 }}
       >
         <button
           onClick={handleShare}
-          className="flex items-center gap-2 px-3 py-2 bg-white text-black text-xs font-medium border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          className="flex items-center justify-center w-10 h-10 bg-white text-black border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          title="Share"
         >
-          <Share2 className="w-3 h-3" />
-          Share
+          <Share2 className="w-4 h-4" />
         </button>
         <button
           onClick={handleXShare}
-          className="flex items-center gap-2 px-3 py-2 bg-white text-black text-xs font-medium border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          className="flex items-center justify-center w-10 h-10 bg-white text-black border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          title="Share on X"
         >
-          <span className="w-3 h-3 text-xs font-bold">X</span>
-          X
+          <span className="w-4 h-4 text-sm font-bold">X</span>
         </button>
         <button
           onClick={handleInstagramShare}
-          className="flex items-center gap-2 px-3 py-2 bg-white text-black text-xs font-medium border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          className="flex items-center justify-center w-10 h-10 bg-white text-black border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          title="Share on Instagram"
         >
-          <Instagram className="w-3 h-3" />
-          Instagram
+          <Instagram className="w-4 h-4" />
         </button>
         <button
           onClick={handleTikTokShare}
-          className="flex items-center gap-2 px-3 py-2 bg-white text-black text-xs font-medium border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          className="flex items-center justify-center w-10 h-10 bg-white text-black border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          title="Share on TikTok"
         >
-          <span className="w-3 h-3 text-xs font-bold">T</span>
-          TikTok
+          <span className="w-4 h-4 text-sm font-bold">T</span>
         </button>
       </motion.div>
 
