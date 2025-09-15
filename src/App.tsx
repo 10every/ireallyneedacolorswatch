@@ -51,19 +51,19 @@ export default function App() {
 
   return (
     <div 
-      className="h-screen flex flex-col items-center justify-center px-6 py-6 sm:py-8 transition-colors duration-1000 overflow-hidden"
+      className="h-screen flex flex-col items-center justify-center px-6 py-8 transition-colors duration-1000 overflow-hidden"
       style={{ 
         backgroundColor: generatedColor ? generatedColor.color : 'var(--background)' 
       }}
     >
       {/* Header */}
       <motion.div 
-        className="text-center mb-5 sm:mb-6"
+        className="text-center mb-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: hasLoaded ? 1 : 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <div className="flex items-center justify-center mb-6 sm:mb-8" style={{ marginLeft: '10px' }}>
+        <div className="flex items-center justify-center mb-8" style={{ marginLeft: '10px' }}>
           <motion.img 
             src={generatedColor ? logoWhite : logoColored} 
             alt="i really need a color swatch"
@@ -90,7 +90,7 @@ export default function App() {
 
       {/* Search Interface */}
       <motion.div 
-        className="w-full mb-3 sm:mb-6"
+        className="w-full mb-4"
         initial={{ opacity: 0, y: 30 }}
         animate={{ 
           opacity: hasLoaded ? 1 : 0, 
