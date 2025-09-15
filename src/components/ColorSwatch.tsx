@@ -73,9 +73,13 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     ctx.font = '24px Arial';
     ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, centerY + 100);
     
-    // Add website attribution at the bottom
+    // Add website attribution - centered for mobile, bottom for desktop
     ctx.font = '20px Arial';
-    ctx.fillText('i really need a color swatch', canvas.width / 2, canvas.height - 100);
+    if (isMobile) {
+      ctx.fillText('i really need a color swatch', canvas.width / 2, centerY + 200);
+    } else {
+      ctx.fillText('i really need a color swatch', canvas.width / 2, canvas.height - 100);
+    }
 
     return new Promise((resolve) => {
       canvas.toBlob((blob) => {
