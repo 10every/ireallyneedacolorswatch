@@ -90,7 +90,7 @@ export default function App() {
 
       {/* Search Interface */}
       <motion.div 
-        className="w-full mb-4"
+        className="w-full mb-2"
         initial={{ opacity: 0, y: 30 }}
         animate={{ 
           opacity: hasLoaded ? 1 : 0, 
