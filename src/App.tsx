@@ -74,7 +74,7 @@ export default function App() {
       }}
     >
       {/* Centered Content Container */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full">
+      <div className="flex-1 flex flex-col items-center justify-center w-full -mt-4 sm:mt-0">
         {/* Header */}
         <motion.div 
           className="text-center mb-8"
@@ -118,50 +118,50 @@ export default function App() {
           transition={{ duration: 0.7, delay: 1.2, ease: "easeOut" }}
         >
           <SearchBar onSubmit={handleGenerate} isLoading={isGenerating} />
+          
+          {/* Loading State - directly under input */}
+          {isGenerating && (
+            <motion.div 
+              className="flex flex-col items-center gap-3 mt-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <div className="flex gap-2">
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor: generatedColor 
+                        ? (generatedColor.color === '#FFFFFF' || generatedColor.color === '#F7F7F7' ? '#000000' : '#FFFFFF')
+                        : '#000000'
+                    }}
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 1, 0.5]
+                    }}
+                    transition={{ 
+                      duration: 1.2,
+                      repeat: Infinity,
+                      delay: i * 0.2
+                    }}
+                  />
+                ))}
+              </div>
+              <p 
+                className="text-xs"
+                style={{ 
+                  color: generatedColor 
+                    ? (generatedColor.color === '#FFFFFF' || generatedColor.color === '#F7F7F7' ? '#000000' : '#FFFFFF')
+                    : '#000000' 
+                }}
+              >
+                fetching your color!
+              </p>
+            </motion.div>
+          )}
         </motion.div>
       </div>
-
-      {/* Loading State */}
-      {isGenerating && (
-        <motion.div 
-          className="flex flex-col items-center gap-3 mt-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <div className="flex gap-2">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                className="w-2 h-2 rounded-full"
-                style={{
-                  backgroundColor: generatedColor 
-                    ? (generatedColor.color === '#FFFFFF' || generatedColor.color === '#F7F7F7' ? '#000000' : '#FFFFFF')
-                    : '#000000'
-                }}
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 1, 0.5]
-                }}
-                transition={{ 
-                  duration: 1.2,
-                  repeat: Infinity,
-                  delay: i * 0.2
-                }}
-              />
-            ))}
-          </div>
-          <p 
-            className="text-xs"
-            style={{ 
-              color: generatedColor 
-                ? (generatedColor.color === '#FFFFFF' || generatedColor.color === '#F7F7F7' ? '#000000' : '#FFFFFF')
-                : '#000000' 
-            }}
-          >
-            fetching your color!
-          </p>
-        </motion.div>
-      )}
 
       {/* Generated Color Display */}
       {generatedColor && !isGenerating && (
