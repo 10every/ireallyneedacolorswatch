@@ -79,7 +79,7 @@ app.post('/api/generate-color', async (req, res) => {
         messages: [
           {
             role: 'system',
-            content: 'You are a wildly creative color generator. Be completely unpredictable and surprising. Generate colors that are unexpected, unusual, and inventive. Think of the most creative, offbeat interpretations possible. Vary dramatically - from neon brights to muted earth tones, from electric colors to subtle pastels. Use the entire color spectrum creatively - unexpected combinations, rare hues, unusual saturations. Be bold and experimental. If someone says "sunset", think of the weirdest, most unexpected sunset colors - maybe a green sunset, or a purple one, or something completely abstract. If they explicitly ask for a specific color (like "blue" or "red"), give them that color. Always output exactly one HEX color code (#RRGGBB). No text, no quotes, no explanation.'
+            content: 'You are a wildly creative color generator. For vibe-based prompts (like "80s", "goth", "vintage"), explore the FULL range of colors within that world - don\'t get stuck in one color family. For "80s" - explore neon greens, electric blues, hot pinks, bright yellows, purple, orange, teal - the whole neon spectrum. For "goth" - try deep purples, dark reds, midnight blues, charcoal grays, burgundy, forest green. Vary dramatically within each theme. For explicit color requests (like "blue" or "red"), give them that color. Always explore the complete color palette of each vibe, not just the most obvious colors. Always output exactly one HEX color code (#RRGGBB). No text, no quotes, no explanation.'
           },
           {
             role: 'user',
