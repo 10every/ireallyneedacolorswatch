@@ -21,6 +21,7 @@ export default function App() {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [variationCount, setVariationCount] = useState(0);
   const [lastPrompt, setLastPrompt] = useState('');
+  const [lastColor, setLastColor] = useState('');
 
   useEffect(() => {
     // Check for short URL hash to pre-load a color
@@ -75,7 +76,7 @@ export default function App() {
     const currentVariation = isSamePrompt ? variationCount + 1 : 0;
     
     try {
-      const pantoneColor = await generatePantoneColorWithAI(inputValue, currentVariation);
+      const pantoneColor = await generatePantoneColorWithAI(inputValue, currentVariation, lastColor);
       setGeneratedColor({
         color: pantoneColor.hex,
         pantoneCode: pantoneColor.code,
@@ -90,6 +91,9 @@ export default function App() {
         setVariationCount(0);
         setLastPrompt(inputValue.trim().toLowerCase());
       }
+      
+      // Track last color to avoid repetition
+      setLastColor(pantoneColor.hex);
     } catch (error) {
       console.error('Error generating color:', error);
       alert('Failed to generate color. Please try again.');

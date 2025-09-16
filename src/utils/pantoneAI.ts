@@ -5,13 +5,13 @@ interface PantoneColor {
 }
 
 // Simple GPT wrapper for color generation
-export async function generatePantoneColorWithAI(prompt: string, variation: number = 0): Promise<PantoneColor> {
+export async function generatePantoneColorWithAI(prompt: string, variation: number = 0, lastColor: string = ''): Promise<PantoneColor> {
   const response = await fetch('/api/generate-color', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ prompt, variation }),
+    body: JSON.stringify({ prompt, variation, lastColor }),
   });
 
   if (!response.ok) {
