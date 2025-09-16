@@ -8,7 +8,7 @@ export default function SearchBar({ onSubmit, isLoading = false }: { onSubmit: (
     <div className="w-full flex justify-center">
       {/* wrapper that controls final size */}
       <div
-        className="flex items-stretch border-2 border-black"
+        className="flex items-stretch border-2 border-black rounded-lg overflow-hidden"
         style={{ width: "clamp(300px, 95vw, 720px)" }}
       >
         <div className="flex items-center pl-4 pr-3 text-gray-500 bg-white">

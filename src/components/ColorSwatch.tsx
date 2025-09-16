@@ -151,7 +151,7 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     >
       {/* Color Card */}
       <motion.div 
-        className="bg-white border-2 border-black overflow-hidden"
+        className="bg-white border-2 border-black rounded-lg overflow-hidden"
         style={{ width: '300px' }}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -215,14 +215,14 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
       >
         <button
           onClick={handleShare}
-          className="flex items-center gap-2 px-4 py-2 bg-white text-black border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          className="flex items-center gap-2 px-4 py-2 bg-white text-black border-2 border-black rounded-lg hover:bg-gray-100 transition-colors duration-200"
         >
           <Share2 className="w-4 h-4" />
           <span className="text-sm font-medium">Share</span>
         </button>
         <button
           onClick={handleDownload}
-          className="flex items-center gap-2 px-4 py-2 bg-white text-black border-2 border-black hover:bg-gray-100 transition-colors duration-200"
+          className="flex items-center gap-2 px-4 py-2 bg-white text-black border-2 border-black rounded-lg hover:bg-gray-100 transition-colors duration-200"
         >
           <Download className="w-4 h-4" />
           <span className="text-sm font-medium">Download</span>
