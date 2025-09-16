@@ -9,7 +9,14 @@ interface ColorSwatchProps {
 }
 
 export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSwatchProps) {
-  const shareUrl = `${window.location.origin}?color=${encodeURIComponent(color)}&name=${encodeURIComponent(pantoneName)}&code=${encodeURIComponent(pantoneCode)}&prompt=${encodeURIComponent(prompt)}`;
+  // Create a super short URL using base64 encoding
+  const colorData = btoa(JSON.stringify({
+    c: color,
+    n: pantoneName,
+    p: pantoneCode,
+    t: prompt
+  }));
+  const shareUrl = `${window.location.origin}/#${colorData}`;
   const shareText = `Check out this perfect color: ${pantoneName} (${color}) - from ireallyneedacolorswatch.com\n\n${shareUrl}`;
 
   // Generate PNG of the color swatch

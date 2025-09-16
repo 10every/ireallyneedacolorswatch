@@ -21,21 +21,38 @@ export default function App() {
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    // Check for URL parameters to pre-load a color
-    const urlParams = new URLSearchParams(window.location.search);
-    const colorParam = urlParams.get('color');
-    const nameParam = urlParams.get('name');
-    const codeParam = urlParams.get('code');
-    const promptParam = urlParams.get('prompt');
+    // Check for short URL hash to pre-load a color
+    const hash = window.location.hash.substring(1); // Remove the # symbol
+    
+    if (hash) {
+      try {
+        const colorData = JSON.parse(atob(hash));
+        if (colorData.c && colorData.n && colorData.p && colorData.t) {
+          // Pre-load the shared color
+          setGeneratedColor({
+            color: colorData.c,
+            pantoneCode: colorData.p,
+            pantoneName: colorData.n,
+            prompt: colorData.t,
+          });
+        }
+      } catch (error) {
+        // Fallback to old URL parameter format
+        const urlParams = new URLSearchParams(window.location.search);
+        const colorParam = urlParams.get('color');
+        const nameParam = urlParams.get('name');
+        const codeParam = urlParams.get('code');
+        const promptParam = urlParams.get('prompt');
 
-    if (colorParam && nameParam && codeParam && promptParam) {
-      // Pre-load the shared color
-      setGeneratedColor({
-        color: colorParam,
-        pantoneCode: codeParam,
-        pantoneName: nameParam,
-        prompt: promptParam,
-      });
+        if (colorParam && nameParam && codeParam && promptParam) {
+          setGeneratedColor({
+            color: colorParam,
+            pantoneCode: codeParam,
+            pantoneName: nameParam,
+            prompt: promptParam,
+          });
+        }
+      }
     }
 
     // Trigger the welcome animation sequence
