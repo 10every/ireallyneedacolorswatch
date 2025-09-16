@@ -149,45 +149,60 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
       transition={{ duration: 1.2, ease: "easeOut" }}
       className="flex flex-col items-center gap-4 mt-4"
     >
-      {/* Color Card - Matching Shareable Design */}
+      {/* Color Card */}
       <motion.div 
-        className="relative border-2 border-black rounded-lg overflow-hidden"
-        style={{ 
-          width: '300px', 
-          height: '300px',
-          backgroundColor: color 
-        }}
+        className="bg-white border-2 border-black rounded-lg overflow-hidden"
+        style={{ width: '300px' }}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.0, delay: 0.3, ease: "easeOut" }}
       >
-        {/* Color Background */}
+        {/* Color Block - Perfect Square */}
         <div 
-          className="absolute inset-0"
-          style={{ backgroundColor: color }}
+          style={{ 
+            width: '300px', 
+            height: '300px',
+            backgroundColor: color 
+          }}
         />
         
-        {/* Text Overlay - Centered like the shareable PNG */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-6">
+        {/* Color Information Panel */}
+        <div className="bg-white p-3 space-y-2">
           {/* Color Name */}
-          <h3 className="text-2xl font-bold mb-4 leading-tight">
-            {pantoneName}
-          </h3>
+          <div className="space-y-1">
+            <h3 className="text-base font-medium text-black">
+              {pantoneName}
+            </h3>
+            <p className="text-xs text-black font-mono uppercase tracking-wide">
+              {pantoneCode.replace('PANTONE ', '')}
+            </p>
+          </div>
           
-          {/* HEX Code */}
-          <p className="text-lg font-mono mb-2">
-            {color.toUpperCase()}
-          </p>
-          
-          {/* Color Code (without Pantone branding) */}
-          <p className="text-sm font-mono mb-8">
-            {pantoneCode.replace('PANTONE ', '')}
-          </p>
-          
-          {/* Website Attribution */}
-          <p className="text-sm opacity-90">
-            i really need a color swatch
-          </p>
+          {/* Color Values */}
+          <div className="space-y-1 pt-2 border-t-2 border-black">
+            <div className="flex justify-between">
+              <span className="text-xs font-medium text-black uppercase tracking-wide">
+                HEX
+              </span>
+              <span className="text-xs font-mono text-black">
+                {color.toUpperCase()}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-xs font-medium text-black uppercase tracking-wide">
+                RGB
+              </span>
+              <span className="text-xs font-mono text-black">
+                {(() => {
+                  const hex = color.replace('#', '');
+                  const r = parseInt(hex.substring(0, 2), 16);
+                  const g = parseInt(hex.substring(2, 4), 16);
+                  const b = parseInt(hex.substring(4, 6), 16);
+                  return `${r}, ${g}, ${b}`;
+                })()}
+              </span>
+            </div>
+          </div>
         </div>
       </motion.div>
       
