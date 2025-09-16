@@ -18,14 +18,21 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Could not get canvas context');
 
-    // Set canvas size - 9:16 for mobile, square for desktop (high resolution)
+    // Get device pixel ratio for crisp rendering
+    const dpr = window.devicePixelRatio || 1;
+    const scaleFactor = 4; // High quality scaling
+
+    // Set canvas size - 9:16 for mobile, square for desktop (ultra high resolution)
     if (isMobile) {
-      canvas.width = 2160; // 2x resolution for crisp quality
-      canvas.height = 3840; // 9:16 aspect ratio
+      canvas.width = 1080 * scaleFactor; // 4320px
+      canvas.height = 1920 * scaleFactor; // 7680px
     } else {
-      canvas.width = 2160; // 2x resolution for crisp quality
-      canvas.height = 2160; // Square for Instagram
+      canvas.width = 1080 * scaleFactor; // 4320px
+      canvas.height = 1080 * scaleFactor; // 4320px
     }
+
+    // Scale the context to match the device pixel ratio
+    ctx.scale(scaleFactor, scaleFactor);
 
     // Fill background with the color
     ctx.fillStyle = color;
@@ -57,28 +64,28 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
       return lines;
     };
 
-    // Add color name with wrapping (scaled for high resolution)
-    ctx.font = 'bold 96px Arial'; // 2x font size
-    const nameLines = wrapText(pantoneName, canvas.width - 200, 96); // 2x padding
-    const centerY = canvas.height / 2;
+    // Add color name with wrapping (ultra high resolution)
+    ctx.font = 'bold 48px Arial'; // Base font size (will be scaled by context)
+    const nameLines = wrapText(pantoneName, 1080 - 100, 48); // Base dimensions
+    const centerY = (isMobile ? 1920 : 1080) / 2;
     nameLines.forEach((line, index) => {
-      ctx.fillText(line, canvas.width / 2, centerY - 120 + (index * 120)); // 2x spacing
+      ctx.fillText(line, 1080 / 2, centerY - 60 + (index * 60)); // Base spacing
     });
     
-    // Add hex code (scaled for high resolution)
-    ctx.font = '72px Arial'; // 2x font size
-    ctx.fillText(color.toUpperCase(), canvas.width / 2, centerY + 80); // 2x spacing
+    // Add hex code (ultra high resolution)
+    ctx.font = '36px Arial'; // Base font size
+    ctx.fillText(color.toUpperCase(), 1080 / 2, centerY + 40); // Base spacing
     
-    // Add color code (without Pantone branding) (scaled for high resolution)
-    ctx.font = '48px Arial'; // 2x font size
-    ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, centerY + 200); // 2x spacing
+    // Add color code (without Pantone branding) (ultra high resolution)
+    ctx.font = '24px Arial'; // Base font size
+    ctx.fillText(pantoneCode.replace('PANTONE ', ''), 1080 / 2, centerY + 100); // Base spacing
     
-    // Add website attribution - centered for mobile, bottom for desktop (scaled for high resolution)
-    ctx.font = '40px Arial'; // 2x font size
+    // Add website attribution - centered for mobile, bottom for desktop (ultra high resolution)
+    ctx.font = '20px Arial'; // Base font size
     if (isMobile) {
-      ctx.fillText('i really need a color swatch', canvas.width / 2, centerY + 400); // 2x spacing
+      ctx.fillText('i really need a color swatch', 1080 / 2, centerY + 200); // Base spacing
     } else {
-      ctx.fillText('i really need a color swatch', canvas.width / 2, canvas.height - 200); // 2x spacing
+      ctx.fillText('i really need a color swatch', 1080 / 2, 1080 - 100); // Base spacing
     }
 
     return new Promise((resolve) => {
