@@ -9,15 +9,7 @@ interface ColorSwatchProps {
 }
 
 export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSwatchProps) {
-  // Create a super short URL using base64 encoding
-  const colorData = btoa(JSON.stringify({
-    c: color,
-    n: pantoneName,
-    p: pantoneCode,
-    t: prompt
-  }));
-  const shareUrl = `${window.location.origin}/#${colorData}`;
-  const shareText = `Check out this perfect color: ${pantoneName} (${color}) - from ireallyneedacolorswatch.com\n\n${shareUrl}`;
+  const shareText = `Check out this perfect color: ${pantoneName} (${color}) from ireallyneedacolorswatch.com`;
 
   // Generate PNG of the color swatch
   const generateColorPNG = async (isMobile = false): Promise<Blob> => {
@@ -122,19 +114,19 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
         await navigator.share({
           title: `${pantoneName} - Perfect Color`,
           text: shareText,
-          url: shareUrl
+          url: window.location.origin
         });
       } else {
         // Fallback: copy link to clipboard
-        await navigator.clipboard.writeText(shareUrl);
-        alert('Shareable link copied to clipboard!');
+        await navigator.clipboard.writeText(shareText);
+        alert('Share message copied to clipboard!');
       }
     } catch (err) {
       console.log('Error sharing:', err);
-      // Fallback: copy link
+      // Fallback: copy message
       try {
-        await navigator.clipboard.writeText(shareUrl);
-        alert('Shareable link copied to clipboard!');
+        await navigator.clipboard.writeText(shareText);
+        alert('Share message copied to clipboard!');
       } catch (clipboardErr) {
         console.log('Clipboard not available:', clipboardErr);
       }
