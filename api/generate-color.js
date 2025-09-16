@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt } = req.body;
+    const { prompt, variation = 0 } = req.body;
     
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' });
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
           },
           {
             role: 'user',
-            content: prompt
+            content: variation > 0 ? `${prompt} (variation ${variation} - try a completely different approach)` : prompt
           }
         ],
         max_tokens: 10,

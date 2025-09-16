@@ -19,6 +19,8 @@ export default function App() {
   } | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [variationCount, setVariationCount] = useState(0);
+  const [lastPrompt, setLastPrompt] = useState('');
 
   useEffect(() => {
     // Check for short URL hash to pre-load a color
@@ -68,14 +70,26 @@ export default function App() {
     setIsGenerating(true);
     setPrompt(inputValue);
     
+    // Check if this is the same prompt as last time
+    const isSamePrompt = inputValue.trim().toLowerCase() === lastPrompt.toLowerCase();
+    const currentVariation = isSamePrompt ? variationCount + 1 : 0;
+    
     try {
-      const pantoneColor = await generatePantoneColorWithAI(inputValue);
+      const pantoneColor = await generatePantoneColorWithAI(inputValue, currentVariation);
       setGeneratedColor({
         color: pantoneColor.hex,
         pantoneCode: pantoneColor.code,
         pantoneName: pantoneColor.name,
         prompt: inputValue.trim(),
       });
+      
+      // Update variation tracking
+      if (isSamePrompt) {
+        setVariationCount(currentVariation);
+      } else {
+        setVariationCount(0);
+        setLastPrompt(inputValue.trim().toLowerCase());
+      }
     } catch (error) {
       console.error('Error generating color:', error);
       alert('Failed to generate color. Please try again.');
