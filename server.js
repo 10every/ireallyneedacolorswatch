@@ -79,7 +79,7 @@ app.post('/api/generate-color', async (req, res) => {
         messages: [
           {
             role: 'system',
-            content: 'You are a color generator. Always output exactly one HEX color code (#RRGGBB). No text, no quotes, no explanation.'
+            content: 'You are a creative color generator. Generate unexpected, inventive colors that capture the essence of the prompt in surprising ways. Think beyond the obvious - if someone says "sunset", don\'t just give orange/red, think of the unexpected colors that make sunsets magical. If they explicitly ask for a specific color (like "blue" or "red"), give them that color. Always output exactly one HEX color code (#RRGGBB). No text, no quotes, no explanation.'
           },
           {
             role: 'user',
@@ -87,7 +87,7 @@ app.post('/api/generate-color', async (req, res) => {
           }
         ],
         max_tokens: 10,
-        temperature: 0.7,
+        temperature: 0.9,
       }),
     });
 
