@@ -64,21 +64,21 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
       return lines;
     };
 
-    // Add color name with wrapping (ultra high resolution) - lowercase
+    // Add color name with wrapping (ultra high resolution) - preserve original case
     ctx.font = 'bold 48px Arial'; // Base font size (will be scaled by context)
-    const nameLines = wrapText(pantoneName.toLowerCase(), 1080 - 100, 48); // Base dimensions
+    const nameLines = wrapText(pantoneName, 1080 - 100, 48); // Base dimensions
     const centerY = (isMobile ? 1920 : 1080) / 2;
     nameLines.forEach((line, index) => {
       ctx.fillText(line, 1080 / 2, centerY - 60 + (index * 60)); // Base spacing
     });
     
-    // Add hex code (ultra high resolution) - lowercase
+    // Add hex code (ultra high resolution) - uppercase
     ctx.font = '36px Arial'; // Base font size
-    ctx.fillText(color.toLowerCase(), 1080 / 2, centerY + 40); // Base spacing
+    ctx.fillText(color.toUpperCase(), 1080 / 2, centerY + 40); // Base spacing
     
-    // Add color code (without Pantone branding) (ultra high resolution) - lowercase
+    // Add color code (without Pantone branding) (ultra high resolution) - uppercase
     ctx.font = '24px Arial'; // Base font size
-    ctx.fillText(pantoneCode.replace('PANTONE ', '').toLowerCase(), 1080 / 2, centerY + 100); // Base spacing
+    ctx.fillText(pantoneCode.replace('PANTONE ', ''), 1080 / 2, centerY + 100); // Base spacing
     
     // Add website attribution - centered for mobile, bottom for desktop (ultra high resolution) - lowercase
     ctx.font = '20px Arial'; // Base font size

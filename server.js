@@ -54,7 +54,7 @@ app.post('/api/generate-color', async (req, res) => {
       
       const randomPastel = pastelColors[Math.floor(Math.random() * pastelColors.length)];
       const pantoneCode = `PANTONE ${Math.floor(Math.random() * 9000) + 1000} TPX`;
-      const colorName = prompt.charAt(0).toUpperCase() + prompt.slice(1);
+      const colorName = prompt; // Preserve exact case from prompt
 
       return res.status(200).json({
         hex: randomPastel,
@@ -106,7 +106,7 @@ app.post('/api/generate-color', async (req, res) => {
     
     // Generate Pantone code and color name
     const pantoneCode = `PANTONE ${Math.floor(Math.random() * 9000) + 1000} TPX`;
-    const colorName = prompt.charAt(0).toUpperCase() + prompt.slice(1);
+    const colorName = prompt; // Preserve exact case from prompt
     
     res.status(200).json({
       hex: hexColor,
