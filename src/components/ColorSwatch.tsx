@@ -18,13 +18,13 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Could not get canvas context');
 
-    // Set canvas size - 9:16 for mobile, square for desktop
+    // Set canvas size - 9:16 for mobile, square for desktop (high resolution)
     if (isMobile) {
-      canvas.width = 1080;
-      canvas.height = 1920; // 9:16 aspect ratio
+      canvas.width = 2160; // 2x resolution for crisp quality
+      canvas.height = 3840; // 9:16 aspect ratio
     } else {
-      canvas.width = 1080;
-      canvas.height = 1080; // Square for Instagram
+      canvas.width = 2160; // 2x resolution for crisp quality
+      canvas.height = 2160; // Square for Instagram
     }
 
     // Fill background with the color
@@ -57,28 +57,28 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
       return lines;
     };
 
-    // Add color name with wrapping
-    ctx.font = 'bold 48px Arial';
-    const nameLines = wrapText(pantoneName, canvas.width - 100, 48);
+    // Add color name with wrapping (scaled for high resolution)
+    ctx.font = 'bold 96px Arial'; // 2x font size
+    const nameLines = wrapText(pantoneName, canvas.width - 200, 96); // 2x padding
     const centerY = canvas.height / 2;
     nameLines.forEach((line, index) => {
-      ctx.fillText(line, canvas.width / 2, centerY - 60 + (index * 60));
+      ctx.fillText(line, canvas.width / 2, centerY - 120 + (index * 120)); // 2x spacing
     });
     
-    // Add hex code
-    ctx.font = '36px Arial';
-    ctx.fillText(color.toUpperCase(), canvas.width / 2, centerY + 40);
+    // Add hex code (scaled for high resolution)
+    ctx.font = '72px Arial'; // 2x font size
+    ctx.fillText(color.toUpperCase(), canvas.width / 2, centerY + 80); // 2x spacing
     
-    // Add color code (without Pantone branding)
-    ctx.font = '24px Arial';
-    ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, centerY + 100);
+    // Add color code (without Pantone branding) (scaled for high resolution)
+    ctx.font = '48px Arial'; // 2x font size
+    ctx.fillText(pantoneCode.replace('PANTONE ', ''), canvas.width / 2, centerY + 200); // 2x spacing
     
-    // Add website attribution - centered for mobile, bottom for desktop
-    ctx.font = '20px Arial';
+    // Add website attribution - centered for mobile, bottom for desktop (scaled for high resolution)
+    ctx.font = '40px Arial'; // 2x font size
     if (isMobile) {
-      ctx.fillText('i really need a color swatch', canvas.width / 2, centerY + 200);
+      ctx.fillText('i really need a color swatch', canvas.width / 2, centerY + 400); // 2x spacing
     } else {
-      ctx.fillText('i really need a color swatch', canvas.width / 2, canvas.height - 100);
+      ctx.fillText('i really need a color swatch', canvas.width / 2, canvas.height - 200); // 2x spacing
     }
 
     return new Promise((resolve) => {
