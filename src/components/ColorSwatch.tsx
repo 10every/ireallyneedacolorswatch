@@ -151,7 +151,7 @@ export function ColorSwatch({ color, pantoneCode, pantoneName, prompt }: ColorSw
     >
       {/* Color Card - Matching Shareable Design */}
       <motion.div 
-        className="relative rounded-lg overflow-hidden"
+        className="relative border-2 border-black rounded-lg overflow-hidden"
         style={{ 
           width: '300px', 
           height: '300px',
